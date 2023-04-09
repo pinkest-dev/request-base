@@ -19,11 +19,11 @@ class RequestBase {
     getAllDomens() {
         return Object.keys(this.cookies);
     }
+    getAllCookies() {
+        return this.cookies;
+    }
     getCookies(domen) {
-        if (domen)
-            return this.cookies[domen];
-        else
-            return this.cookies;
+        return this.cookies[domen];
     }
     clearCookies(domen) {
         if (typeof (domen) === 'undefined')

@@ -23,10 +23,11 @@ class RequestBase {
     public getAllDomens() {
         return Object.keys(this.cookies);
     }
-    public getCookies(domen?: string) {
-        if (domen)
-            return this.cookies[domen];
-        else return this.cookies;
+    public getAllCookies() {
+        return this.cookies;
+    }
+    public getCookies(domen: string) {
+        return this.cookies[domen];
     }
     public clearCookies(domen?: string) {
         if (typeof (domen) === 'undefined')
@@ -141,15 +142,15 @@ class RequestBase {
                     if (options?.isJsonResult === true || typeof (options?.isJsonResult) === 'undefined') {
                         try {
                             return { headers: err.response.headers, body: JSON.parse(err.response.body), statusCode: err.statusCode, requestOptions: actualRequestOptions };
-                        } catch (err){
+                        } catch (err) {
                             throw new Error(`Cant parse response. It's not in json format`);
                         }
                     } else {
                         return { headers: err.response.headers, body: err.response.body, statusCode: err.statusCode, requestOptions: actualRequestOptions };
                     }
                 else {
-                        throw new Error(err);
-                    }
+                    throw new Error(err);
+                }
             });
             return result;
         } catch (err) {

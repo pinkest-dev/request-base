@@ -11,12 +11,13 @@ declare class RequestBase {
         [cookieName: string]: Cookie;
     }): void;
     getAllDomens(): string[];
-    getCookies(domen?: string): {
-        [cookieName: string]: Cookie;
-    } | {
+    getAllCookies(): {
         [domen: string]: {
             [cookieName: string]: Cookie;
         };
+    };
+    getCookies(domen: string): {
+        [cookieName: string]: Cookie;
     };
     clearCookies(domen?: string): void;
     /**Метод для превращения объекта красивых куков в строку, которую можно уже использовать в запросе */
