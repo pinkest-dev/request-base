@@ -95,7 +95,8 @@ class RequestBase {
                     ...headers
                 },
                 timeout: {
-                    request: this.timeout
+                    request: this.timeout,
+                    response: this.timeout
                 },
                 ...requestOptions
             };
