@@ -17,6 +17,9 @@ class RequestBase {
         this.defaultHeaders = options?.defaultHeaders;
     }
 
+    public setProxy(proxy: string) {
+        this.proxy = proxy;
+    }
     public setCookies(domen: string, cookies: { [cookieName: string]: Cookie }) {
         this.cookies[domen] = cookies;
     }

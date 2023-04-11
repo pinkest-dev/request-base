@@ -7,6 +7,7 @@ declare class RequestBase {
     private userAgent;
     private defaultHeaders?;
     constructor(options?: ConstructorOptions);
+    setProxy(proxy: string): void;
     setCookies(domen: string, cookies: {
         [cookieName: string]: Cookie;
     }): void;

@@ -13,6 +13,9 @@ class RequestBase {
         this.timeout = options?.timeout || settings.timeout;
         this.defaultHeaders = options?.defaultHeaders;
     }
+    setProxy(proxy) {
+        this.proxy = proxy;
+    }
     setCookies(domen, cookies) {
         this.cookies[domen] = cookies;
     }
