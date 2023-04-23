@@ -84,8 +84,31 @@ class RequestBase {
             this.cookies[domen][parsedCookie.name] = parsedCookie;
         }
     }
+
+    public async doRequest(url: string, requestOptions?: OptionsOfTextResponseBody, options?: {
+        /**Ответ сервера в формате json? */
+        isJsonResult?: boolean,
+        /**Использовать ли прокси, установленный в конструкторе класса? Если параметр не передается, то прокси используется */
+        useDefaultProxy?: boolean,
+        /**Использовать ли сохраненные в оперативной памяти куки? */
+        useSavedCookies?: boolean,
+        /**Использовать ли на этот запрос отдельный прокси? Этот параметр перекрывает дефолтный прокси */
+        customProxy?: string,
+        /**Время, после которого функция вернет ошибку */
+        customTimeout?: number
+    }): Promise<{ body: any, headers: Headers, statusCode?: number, requestOptions: OptionsOfTextResponseBody }> {
+        return new Promise(async (resolve, reject) => {
+            setTimeout(reject, options?.customTimeout || this.timeout);
+            this._doRequest(url, requestOptions, options).then(data => {
+                resolve(data);
+            }).catch(err => {
+                reject(err);
+            });
+        });
+    }
+
     /**Универсальная функция для запроса */
-    protected async doRequest(url: string, requestOptions?: OptionsOfTextResponseBody, options?: {
+    protected async _doRequest(url: string, requestOptions?: OptionsOfTextResponseBody, options?: {
         /**Ответ сервера в формате json? */
         isJsonResult?: boolean,
         /**Использовать ли прокси, установленный в конструкторе класса? Если параметр не передается, то прокси используется */
@@ -106,10 +129,6 @@ class RequestBase {
                     cookie: options?.useSavedCookies === false ? undefined : RequestBase.PackCookiesToString(allCookies),
                     'User-Agent': this.userAgent,
                     ...headers
-                },
-                timeout: {
-                    request: this.timeout,
-                    response: this.timeout
                 },
                 ...requestOptions
             }

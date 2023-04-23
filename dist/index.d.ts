@@ -1,4 +1,4 @@
-import { OptionsOfTextResponseBody } from "got";
+import { Headers, OptionsOfTextResponseBody } from "got";
 import { ConstructorOptions, Cookie } from "./interfaces.js";
 declare class RequestBase {
     private cookies;
@@ -34,8 +34,25 @@ declare class RequestBase {
     protected static ParseNewCookiesString(cookieStr: string): Cookie;
     /**Установка массива куков, куки должны браться из set-cookie */
     protected setDirtyCookies(domen: string, cookies: string[]): void;
+    doRequest(url: string, requestOptions?: OptionsOfTextResponseBody, options?: {
+        /**Ответ сервера в формате json? */
+        isJsonResult?: boolean;
+        /**Использовать ли прокси, установленный в конструкторе класса? Если параметр не передается, то прокси используется */
+        useDefaultProxy?: boolean;
+        /**Использовать ли сохраненные в оперативной памяти куки? */
+        useSavedCookies?: boolean;
+        /**Использовать ли на этот запрос отдельный прокси? Этот параметр перекрывает дефолтный прокси */
+        customProxy?: string;
+        /**Время, после которого функция вернет ошибку */
+        customTimeout?: number;
+    }): Promise<{
+        body: any;
+        headers: Headers;
+        statusCode?: number;
+        requestOptions: OptionsOfTextResponseBody;
+    }>;
     /**Универсальная функция для запроса */
-    protected doRequest(url: string, requestOptions?: OptionsOfTextResponseBody, options?: {
+    protected _doRequest(url: string, requestOptions?: OptionsOfTextResponseBody, options?: {
         /**Ответ сервера в формате json? */
         isJsonResult?: boolean;
         /**Использовать ли прокси, установленный в конструкторе класса? Если параметр не передается, то прокси используется */

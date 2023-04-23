@@ -80,8 +80,18 @@ class RequestBase {
             this.cookies[domen][parsedCookie.name] = parsedCookie;
         }
     }
-    /**Универсальная функция для запроса */
     async doRequest(url, requestOptions, options) {
+        return new Promise(async (resolve, reject) => {
+            setTimeout(reject, options?.customTimeout || this.timeout);
+            this._doRequest(url, requestOptions, options).then(data => {
+                resolve(data);
+            }).catch(err => {
+                reject(err);
+            });
+        });
+    }
+    /**Универсальная функция для запроса */
+    async _doRequest(url, requestOptions, options) {
         try {
             const domen = url.replaceAll('http://', '').replaceAll('https://', '').split('/')[0];
             const headers = requestOptions?.headers ? { ...this.defaultHeaders, ...requestOptions.headers } : { ...this.defaultHeaders };
@@ -93,10 +103,6 @@ class RequestBase {
                     cookie: options?.useSavedCookies === false ? undefined : RequestBase.PackCookiesToString(allCookies),
                     'User-Agent': this.userAgent,
                     ...headers
-                },
-                timeout: {
-                    request: this.timeout,
-                    response: this.timeout
                 },
                 ...requestOptions
             };
